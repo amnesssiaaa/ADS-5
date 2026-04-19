@@ -57,7 +57,32 @@ std::string infx2pstfx(const std::string& inf) {
       return result;
 }
 
+int Operation(int a, int b, char op) {
+    if (op == '+') return a + b;
+    if (op == '-') return a - b;
+    if (op == '*') return a * b;
+    if (op == '/') return a / b;
+  	return 0;
+}
 int eval(const std::string& pref) {
-  // добавьте код
-  return 0;
+    TStack<int, 100> stack2;
+    for (size_t i = 0; i < pref.length(); ++i) {
+        char simvol = pref[i];
+        if (simvol == ' ') continue;
+        if (simvol >= '0' && simvol <= '9') {
+            int num = 0;
+            while (i < pref.length() && pref[i] >= '0' && pref[i] <= '9') {
+                num = num * 10 + (pref[i] - '0');
+                ++i;
+            }
+            stack2.push(num);
+            --i;
+        }
+        else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
+            int a = stack2.get(); stack2.pop();
+            int b = stack2.get(); stack2.pop();
+            stack2.push(Operation(b,a,simvol));
+        }
+    }
+    return stack2.get();
 }
