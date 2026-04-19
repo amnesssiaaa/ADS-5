@@ -19,16 +19,20 @@ std::string infx2pstfx(const std::string& inf) {
         if (simvol == ' ') continue;
         if (simvol >= '0' && simvol <= '9') {
             result += simvol;
-            while (i + 1 < inf.length() && inf[i + 1] >= '0' && inf[i + 1] <= '9') {
+            while (i + 1 < inf.length() &&
+                   inf[i + 1] >= '0' && inf[i + 1] <= '9') {
                 ++i;
                 result += inf[i];
             }
             result += ' ';
-        } else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
-            if (stack1.empty() || stack1.get() == '(' || prioritet(simvol) > prioritet(stack1.get())) {
+        } else if (simvol == '+' || simvol == '-' ||
+                   simvol == '*' || simvol == '/') {
+            if (stack1.empty() || stack1.get() == '(' ||
+                prioritet(simvol) > prioritet(stack1.get())) {
                 stack1.push(simvol);
             } else {
-                while (!stack1.empty() && stack1.get() != '(' && prioritet(stack1.get()) >= prioritet(simvol)) {
+                while (!stack1.empty() && stack1.get() != '(' &&
+                       prioritet(stack1.get()) >= prioritet(simvol)) {
                     result += stack1.get();
                     result += ' ';
                     stack1.pop();
@@ -71,12 +75,14 @@ int eval(const std::string& pref) {
         if (simvol == ' ') continue;
         if (simvol >= '0' && simvol <= '9') {
             int num = simvol - '0';
-            while (i + 1 < pref.length() && pref[i + 1] >= '0' && pref[i + 1] <= '9') {
+            while (i + 1 < pref.length() &&
+                   pref[i + 1] >= '0' && pref[i + 1] <= '9') {
                 ++i;
                 num = num * 10 + (pref[i] - '0');
             }
             stack2.push(num);
-        } else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
+        } else if (simvol == '+' || simvol == '-' ||
+                   simvol == '*' || simvol == '/') {
             int a = stack2.get();
             stack2.pop();
             int b = stack2.get();
