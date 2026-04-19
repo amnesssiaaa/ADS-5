@@ -18,12 +18,12 @@ std::string infx2pstfx(const std::string& inf) {
         char simvol = inf[i];
         if (simvol == ' ') continue;
         if (simvol >= '0' && simvol <= '9') {
-            while (i < inf.length() && inf[i] >= '0' && inf[i] <= '9') {
-                result += inf[i];
+            result += simvol;
+            while (i + 1 < inf.length() && inf[i + 1] >= '0' && inf[i + 1] <= '9') {
                 ++i;
+                result += inf[i];
             }
             result += ' ';
-            --i;
         } else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
             if (stack1.empty() || stack1.get() == '(' || prioritet(simvol) > prioritet(stack1.get())) {
                 stack1.push(simvol);
@@ -70,13 +70,12 @@ int eval(const std::string& pref) {
         char simvol = pref[i];
         if (simvol == ' ') continue;
         if (simvol >= '0' && simvol <= '9') {
-            int num = 0;
-            while (i < pref.length() && pref[i] >= '0' && pref[i] <= '9') {
-                num = num * 10 + (pref[i] - '0');
+            int num = simvol - '0';
+            while (i + 1 < pref.length() && pref[i + 1] >= '0' && pref[i + 1] <= '9') {
                 ++i;
+                num = num * 10 + (pref[i] - '0');
             }
             stack2.push(num);
-            --i;
         } else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
             int a = stack2.get();
             stack2.pop();
