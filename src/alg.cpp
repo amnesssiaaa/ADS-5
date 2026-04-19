@@ -3,16 +3,18 @@
 #include <map>
 #include "tstack.h"
 
-int prioritet(char oper) { //определение приоритета операций
+int prioritet(char oper) { // определение приоритета операций
     if (oper == '(') return 0;
     if (oper == ')') return 1;
     if (oper == '+' || oper == '-') return 2;
     if (oper == '*' || oper == '/') return 3;
+    return -1;
 }
+
 std::string infx2pstfx(const std::string& inf) {
-  TStack<char, 100> stack1;
-  std::string result;
-  for (size_t i = 0; i < inf.length(); ++i) {
+    TStack<char, 100> stack1;
+    std::string result;
+    for (size_t i = 0; i < inf.length(); ++i) {
         char simvol = inf[i];
         if (simvol >= '0' && simvol <= '9') {
             while (i < inf.length() && inf[i] >= '0' && inf[i] <= '9') {
@@ -54,7 +56,7 @@ std::string infx2pstfx(const std::string& inf) {
         result += ' ';
         stack1.pop();
     }
-      return result;
+    return result;
 }
 
 int Operation(int a, int b, char op) {
@@ -62,8 +64,9 @@ int Operation(int a, int b, char op) {
     if (op == '-') return a - b;
     if (op == '*') return a * b;
     if (op == '/') return a / b;
-  	return 0;
+    return 0;
 }
+
 int eval(const std::string& pref) {
     TStack<int, 100> stack2;
     for (size_t i = 0; i < pref.length(); ++i) {
@@ -79,9 +82,11 @@ int eval(const std::string& pref) {
             --i;
         }
         else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
-            int a = stack2.get(); stack2.pop();
-            int b = stack2.get(); stack2.pop();
-            stack2.push(Operation(b,a,simvol));
+            int a = stack2.get();
+            stack2.pop();
+            int b = stack2.get();
+            stack2.pop();
+            stack2.push(Operation(b, a, simvol));
         }
     }
     return stack2.get();
