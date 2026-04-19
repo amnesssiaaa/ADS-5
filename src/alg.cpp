@@ -3,7 +3,7 @@
 #include <map>
 #include "tstack.h"
 
-int prioritet(char oper) { // определение приоритета операций
+int prioritet(char oper) {
     if (oper == '(') return 0;
     if (oper == ')') return 1;
     if (oper == '+' || oper == '-') return 2;
@@ -16,20 +16,18 @@ std::string infx2pstfx(const std::string& inf) {
     std::string result;
     for (size_t i = 0; i < inf.length(); ++i) {
         char simvol = inf[i];
+        if (simvol == ' ') continue;
         if (simvol >= '0' && simvol <= '9') {
-            size_t start = i;
-            while (start < inf.length() && inf[start] >= '0' && inf[start] <= '9') {
-                result += inf[start];
-                ++start;
+            while (i < inf.length() && inf[i] >= '0' && inf[i] <= '9') {
+                result += inf[i];
+                ++i;
             }
             result += ' ';
-            i = start - i; 
-        }
-        else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
+            --i;
+        } else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
             if (stack1.empty() || stack1.get() == '(' || prioritet(simvol) > prioritet(stack1.get())) {
                 stack1.push(simvol);
-            }
-            else {
+            } else {
                 while (!stack1.empty() && stack1.get() != '(' && prioritet(stack1.get()) >= prioritet(simvol)) {
                     result += stack1.get();
                     result += ' ';
@@ -37,8 +35,7 @@ std::string infx2pstfx(const std::string& inf) {
                 }
                 stack1.push(simvol);
             }
-        }
-        else if (simvol == ')') {
+        } else if (simvol == ')') {
             while (!stack1.empty() && stack1.get() != '(') {
                 result += stack1.get();
                 result += ' ';
@@ -47,8 +44,7 @@ std::string infx2pstfx(const std::string& inf) {
             if (!stack1.empty() && stack1.get() == '(') {
                 stack1.pop();
             }
-        }
-        else if (simvol == '(') {
+        } else if (simvol == '(') {
             stack1.push(simvol);
         }
     }
@@ -81,8 +77,7 @@ int eval(const std::string& pref) {
             }
             stack2.push(num);
             --i;
-        }
-        else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
+        } else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
             int a = stack2.get();
             stack2.pop();
             int b = stack2.get();
