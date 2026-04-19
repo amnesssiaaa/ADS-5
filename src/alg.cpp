@@ -17,12 +17,13 @@ std::string infx2pstfx(const std::string& inf) {
     for (size_t i = 0; i < inf.length(); ++i) {
         char simvol = inf[i];
         if (simvol >= '0' && simvol <= '9') {
-            while (i < inf.length() && inf[i] >= '0' && inf[i] <= '9') {
-                result += inf[i];
-                ++i;
+            size_t start = i;
+            while (start < inf.length() && inf[start] >= '0' && inf[start] <= '9') {
+                result += inf[start];
+                ++start;
             }
             result += ' ';
-            --i;
+            i = start - i; 
         }
         else if (simvol == '+' || simvol == '-' || simvol == '*' || simvol == '/') {
             if (stack1.empty() || stack1.get() == '(' || prioritet(simvol) > prioritet(stack1.get())) {
